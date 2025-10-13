@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Index() {
     return (
     <View style={styles.container}>
-        <Text style={styles.text}>About screen</Text>
+        <Text style={styles.text}>Stats screen</Text>
     </View>
     );
 }
@@ -17,5 +17,5 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff'
-    }
+    },
 })

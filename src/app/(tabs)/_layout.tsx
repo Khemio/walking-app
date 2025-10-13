@@ -1,6 +1,5 @@
-import { Tabs } from 'expo-router';
-
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Tabs } from 'expo-router';
 
 
 export default function TabLayout() {
@@ -19,7 +18,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home/index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -28,11 +27,29 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="map/index"
         options={{
-          title: 'About',
+          title: 'Map',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
+            <Ionicons name={focused ? 'map-sharp' : 'map-outline'} color={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="social/index"
+        options={{
+          title: 'Social',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'chatbubbles-sharp' : 'chatbubbles-outline'} color={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="stats/index"
+        options={{
+          title: 'Stats',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'analytics-sharp' : 'analytics-outline'} color={color} size={24}/>
           ),
         }}
       />
