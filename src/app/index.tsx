@@ -1,5 +1,6 @@
 import { Redirect } from "expo-router";
-// import { StyleSheet } from "react-native";
+// import { StyleSheet, View } from "react-native";
+// import Button  from "@/src/components/Button"
 // import { authenticated, useAuth } from "../lib/auth";
 
 export default function Index() {
