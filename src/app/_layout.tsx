@@ -1,4 +1,8 @@
-import { Stack } from 'expo-router';
+import { initMock } from "@/src/lib/mock";
+import { Stack } from "expo-router";
+
+// Use this function to initialize useUserStore with fake data
+initMock();
 
 export default function RootLayout() {
   return (
