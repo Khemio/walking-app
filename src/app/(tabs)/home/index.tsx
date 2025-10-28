@@ -1,21 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import DailyStepsWidget from '../../../components/DailyStepsWidget';
+import WorkoutScreen from '../../../components/WorkoutScreen';
 
-export default function Index() {
+export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Home screen</Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <DailyStepsWidget />
+      <WorkoutScreen />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: "center",
-    alignItems: "center",
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 20,
   },
-  text: {
-    color: '#fff'
-  },
-})
+});
