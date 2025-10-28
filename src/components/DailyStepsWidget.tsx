@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Pedometer } from 'expo-sensors';
-import { useActivityPermissions } from '../lib/useActivityPermissions';
+import { useActivityPermissions, openAppSettings } from '../lib/useActivityPermissions';
 
 const DailyStepsWidget = () => {
-  const { status, requestPermissionsAsync } = useActivityPermissions();
+  // Now we specify that this component ONLY needs the pedometer permission.
+  const { status, requestPermissionsAsync } = useActivityPermissions({ pedometer: true });
   const [stepCount, setStepCount] = useState(0);
 
   useEffect(() => {
@@ -12,13 +13,11 @@ const DailyStepsWidget = () => {
       if (status === 'granted') {
         const end = new Date();
         const start = new Date();
-        start.setHours(0, 0, 0, 0); // Set to midnight
+        start.setHours(0, 0, 0, 0); // Midnight
 
         try {
           const result = await Pedometer.getStepCountAsync(start, end);
-          if (result) {
-            setStepCount(result.steps);
-          }
+          setStepCount(result.steps);
         } catch (error) {
           console.error("Failed to get step count:", error);
         }
@@ -26,11 +25,19 @@ const DailyStepsWidget = () => {
     };
 
     fetchStepCount();
-    // Re-fetch every minute to update the count, as the component might stay mounted
     const interval = setInterval(fetchStepCount, 60000);
 
     return () => clearInterval(interval);
   }, [status]);
+
+  const handlePermissionRequest = () => {
+      if (status === 'denied') {
+          // If denied, the prompt won't show again. Guide user to settings.
+          openAppSettings();
+      } else {
+          requestPermissionsAsync();
+      }
+  }
 
   const renderContent = () => {
     switch (status) {
@@ -38,16 +45,17 @@ const DailyStepsWidget = () => {
         return <Text style={styles.text}>Сегодня пройдено: {stepCount} шагов</Text>;
       case 'denied':
         return (
-          <View>
+          <View style={styles.centered}>
             <Text style={styles.text}>Permission to access activity data is denied.</Text>
-            <Button title="Grant Permission" onPress={requestPermissionsAsync} />
+            <Text style={styles.subText}>Please enable it in your settings.</Text>
+            <Button title="Open Settings" onPress={handlePermissionRequest} />
           </View>
         );
-      default:
+      default: // undetermined
         return (
-           <View>
-             <Text style={styles.text}>Requesting permissions...</Text>
-             <Button title="Request Permissions" onPress={requestPermissionsAsync} />
+           <View style={styles.centered}>
+             <Text style={styles.text}>Track your daily steps</Text>
+             <Button title="Grant Permission" onPress={handlePermissionRequest} />
            </View>
         );
     }
@@ -61,14 +69,24 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
+    marginVertical: 10,
+    width: '90%',
+  },
+  centered: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
   },
   text: {
     fontSize: 18,
     color: '#333',
+    textAlign: 'center',
   },
+  subText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 10,
+  }
 });
 
 export default DailyStepsWidget;
