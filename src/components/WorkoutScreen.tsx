@@ -1,27 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, Button, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { Pedometer } from 'expo-sensors';
 import * as Location from 'expo-location';
-import { useActivityPermissions } from '../lib/useActivityPermissions';
+import { useActivityPermissions, openAppSettings } from '../lib/useActivityPermissions';
 
-// Helper function to calculate distance between two coordinates (Haversine formula)
 const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371e3; // metres
   const φ1 = (lat1 * Math.PI) / 180;
   const φ2 = (lat2 * Math.PI) / 180;
   const Δφ = ((lat2 - lat1) * Math.PI) / 180;
   const Δλ = ((lon2 - lon1) * Math.PI) / 180;
-
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return R * c; // in metres
+  return R * c;
 };
 
 const WorkoutScreen = () => {
-  const { status, requestPermissionsAsync } = useActivityPermissions();
+  // This component needs both pedometer and location permissions.
+  const { status, requestPermissionsAsync } = useActivityPermissions({ pedometer: true, location: true });
 
   const [isTracking, setIsTracking] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -36,7 +32,6 @@ const WorkoutScreen = () => {
 
   const lastLocation = useRef<Location.LocationObject | null>(null);
 
-  // Timer effect
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isTracking && startTime) {
@@ -47,13 +42,21 @@ const WorkoutScreen = () => {
     return () => clearInterval(timer);
   }, [isTracking, startTime]);
 
-  const startWorkout = async () => {
+  const handleStartWorkout = async () => {
     if (status !== 'granted') {
-      const newStatus = await requestPermissionsAsync();
-      if (newStatus !== 'granted') {
-        alert("Permissions are required to start a workout.");
-        return;
+      if (status === 'denied') {
+        Alert.alert(
+          "Permissions Required",
+          "To track a workout, we need access to your activity and location data. Please enable these in your settings.",
+          [
+            { text: "Cancel", style: "cancel" },
+            { text: "Open Settings", onPress: () => openAppSettings() }
+          ]
+        );
+      } else {
+        await requestPermissionsAsync();
       }
+      return;
     }
 
     setIsTracking(true);
@@ -63,33 +66,24 @@ const WorkoutScreen = () => {
     setSessionDistance(0);
     lastLocation.current = null;
 
-    // 1. Get initial step count
     const end = new Date();
     const start = new Date();
     start.setHours(0, 0, 0, 0);
     const pastStepCount = await Pedometer.getStepCountAsync(start, end);
     initialSteps.current = pastStepCount.steps;
 
-    // 2. Subscribe to step updates
     const stepSub = Pedometer.watchStepCount(result => {
         setSessionSteps(result.steps - initialSteps.current);
     });
     setStepSubscription(stepSub);
 
-    // 3. Subscribe to location updates
     const locSub = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.High,
-        timeInterval: 1000, // 1 second
-        distanceInterval: 10, // 10 meters
-      },
+      { accuracy: Location.Accuracy.High, timeInterval: 1000, distanceInterval: 10 },
       (location) => {
         if (lastLocation.current) {
           const distance = calculateDistance(
-            lastLocation.current.coords.latitude,
-            lastLocation.current.coords.longitude,
-            location.coords.latitude,
-            location.coords.longitude
+            lastLocation.current.coords.latitude, lastLocation.current.coords.longitude,
+            location.coords.latitude, location.coords.longitude
           );
           setSessionDistance((prev) => prev + distance);
         }
@@ -102,19 +96,8 @@ const WorkoutScreen = () => {
   const stopWorkout = () => {
     setIsTracking(false);
     setStartTime(null);
-
     stepSubscription?.remove();
-    setStepSubscription(null);
-
     locationSubscription?.remove();
-    setLocationSubscription(null);
-
-    // Optional: Save workout data here
-    console.log(`Workout finished:
-      Time: ${elapsedTime}s
-      Steps: ${sessionSteps}
-      Distance: ${sessionDistance.toFixed(2)}m
-    `);
   };
 
   const formatTime = (seconds: number) => {
@@ -137,12 +120,15 @@ const WorkoutScreen = () => {
       ) : (
          <View style={styles.metricsContainer}>
             <Text style={styles.metricText}>Начните новую тренировку</Text>
+            {status !== 'granted' && (
+                <Text style={styles.permissionWarning}>Требуются разрешения</Text>
+            )}
          </View>
       )}
 
       <Button
         title={isTracking ? "Завершить тренировку" : "Начать тренировку"}
-        onPress={isTracking ? stopWorkout : startWorkout}
+        onPress={isTracking ? stopWorkout : handleStartWorkout}
         color={isTracking ? "red" : "green"}
       />
     </SafeAreaView>
@@ -155,6 +141,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     padding: 20,
+    width: '100%',
   },
   title: {
       fontSize: 32,
@@ -168,6 +155,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginVertical: 10,
   },
+  permissionWarning: {
+      fontSize: 14,
+      color: 'orange',
+      marginTop: 10,
+  }
 });
 
 export default WorkoutScreen;

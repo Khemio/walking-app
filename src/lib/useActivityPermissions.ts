@@ -1,47 +1,81 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Pedometer } from 'expo-sensors';
 import * as Location from 'expo-location';
+import { Linking, AppState } from 'react-native';
 
 type PermissionStatus = 'granted' | 'denied' | 'undetermined';
 
-export const useActivityPermissions = () => {
+interface UseActivityPermissionsOptions {
+  pedometer?: boolean;
+  location?: boolean;
+}
+
+// Helper to open app settings, will be used in components
+export const openAppSettings = () => {
+  Linking.openSettings();
+};
+
+export const useActivityPermissions = (options: UseActivityPermissionsOptions) => {
   const [status, setStatus] = useState<PermissionStatus>('undetermined');
 
-  const checkPermissions = async () => {
-    const pedometerStatus = await Pedometer.getPermissionsAsync();
-    const locationStatus = await Location.getForegroundPermissionsAsync();
+  const checkPermissions = useCallback(async () => {
+    const statuses: Location.PermissionStatus[] = [];
 
-    if (
-      pedometerStatus.status === 'granted' &&
-      locationStatus.status === 'granted'
-    ) {
+    if (options.pedometer) {
+      const { status } = await Pedometer.getPermissionsAsync();
+      statuses.push(status);
+    }
+    if (options.location) {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      statuses.push(status);
+    }
+
+    if (statuses.length === 0) {
+      setStatus('granted'); // No permissions requested, so we're good.
+      return;
+    }
+
+    if (statuses.some(s => s === 'denied')) {
+      setStatus('denied');
+    } else if (statuses.every(s => s === 'granted')) {
       setStatus('granted');
     } else {
-        // If either is denied, we consider the overall status denied for our use case.
-        // If one is granted and the other is undetermined, we still need to prompt.
-        const isDenied = pedometerStatus.status === 'denied' || locationStatus.status === 'denied';
-        setStatus(isDenied ? 'denied' : 'undetermined');
+      setStatus('undetermined');
     }
-  };
+  }, [options.pedometer, options.location]);
 
   useEffect(() => {
     checkPermissions();
-  }, []);
+
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+        if (nextAppState === 'active') {
+            checkPermissions();
+        }
+    });
+
+    return () => {
+        subscription.remove();
+    };
+  }, [checkPermissions]);
 
   const requestPermissionsAsync = async (): Promise<PermissionStatus> => {
-    const pedometerResponse = await Pedometer.requestPermissionsAsync();
-    const locationResponse = await Location.requestForegroundPermissionsAsync();
+    let allGranted = true;
 
-    if (
-      pedometerResponse.status === 'granted' &&
-      locationResponse.status === 'granted'
-    ) {
-      setStatus('granted');
-      return 'granted';
-    } else {
-      setStatus('denied');
-      return 'denied';
+    if (options.pedometer) {
+      const { status } = await Pedometer.requestPermissionsAsync();
+      if (status !== 'granted') allGranted = false;
     }
+
+    if (options.location) {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') allGranted = false;
+    }
+
+    // After requesting, re-check the actual state from the system
+    await checkPermissions();
+    const finalStatus = allGranted ? 'granted' : 'denied';
+
+    return finalStatus;
   };
 
   return { status, requestPermissionsAsync };
