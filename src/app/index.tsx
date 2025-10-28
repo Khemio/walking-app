@@ -1,32 +1,23 @@
-import Button from "@/src/components/Button";
-import { useUserStore } from "@/src/lib/store";
-import { Redirect } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import DailyStepsWidget from '../components/DailyStepsWidget';
+import WorkoutScreen from '../components/WorkoutScreen';
 
 export default function Index() {
-    const authenticated = useUserStore((state) => state.authenticated);
-    const modAuth = useUserStore((state) => state.mod_auth);
-
-    if (authenticated) {
-        return <Redirect href="/home"/>
-    }
-
-    return (
-        <View style={styles.container}>
-            <Button label="Log in" handler={() => modAuth(true)}/>
-        </View>
-    );
-
+  return (
+    <View style={styles.container}>
+      <DailyStepsWidget />
+      <WorkoutScreen />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#25292e',
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    text: {
-        color: '#fff'
-    },
-})
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingTop: 50, // Add padding to avoid overlap with status bar
+  },
+});
