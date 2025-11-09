@@ -16,6 +16,7 @@ interface UserState {
     mod_username: (username: string) => void,
     mod_step_count: (step_count: number) => void,
     inc_step_count: (step_inc: number) => void,
+    mod_location: (location: Location) => void,
     mod_cur_route: (route_id: string) => void,
     mod_last_route: (route_id: string) => void,
 
@@ -40,7 +41,7 @@ function getAuth() {
 }
 
 function getUser() {
-    return {id: "", username: "", step_count: 0, cur_route_id: null, last_route_id: null};
+    return {id: "", username: "", step_count: 0, location: null, cur_route_id: null, last_route_id: null};
 }
 
 function getFriends() {
@@ -79,6 +80,11 @@ export const useUserStore = create<UserState>()((set) => ({
     inc_step_count: (step_inc) => set(
         produce((state) => { 
             state.user.step_count += step_inc;
+        })
+    ),
+    mod_location: (location) => set(
+        produce((state) => { 
+            state.user.location= location;
         })
     ),
     mod_cur_route: (route_id) => set(
