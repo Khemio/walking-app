@@ -15,8 +15,8 @@ export const getLocation = (increment: number)=> {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.542338 + increment * tenMetersWithDegrees, // add your current longitude
-        latitude: 21.620078 + increment * tenMetersWithDegrees,  // add your current lattitude
+        longitude: 21.621494 + increment * tenMetersWithDegrees, // add your current longitude
+        latitude: 47.553466 + increment * tenMetersWithDegrees,  // add your current lattitude
         // longitude: -122.0312186 + increment * tenMetersWithDegrees, // add your current longitude
         // latitude: 37.33233141 + increment * tenMetersWithDegrees,  // add your current lattitude
         },
@@ -58,8 +58,8 @@ const sparLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.542338,
-        latitude: 21.620078,
+        latitude: 47.542338,
+        longitude: 21.620078,
     }
 }
 
@@ -72,8 +72,8 @@ const kassaiLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.543574,
-        latitude: 21.640201,
+        latitude: 47.543574,
+        longitude: 21.640201,
     } 
 }
 
@@ -86,8 +86,8 @@ const mainLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.553466,
-        latitude: 21.621494,
+        latitude: 47.553466,
+        longitude: 21.621494,
     } 
 }
 
