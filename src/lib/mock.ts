@@ -5,8 +5,9 @@ import { Route } from "./types";
 const tenMetersWithDegrees = 0.0001;
 
 // Function to generate a location
-const getLocation = (increment: number) => {
+export const getLocation = (increment: number): unknown => {
     return {
+        // timestamp: 1000000,
         timestamp: 1000000,
         coords: {
         speed: 0,
@@ -126,15 +127,15 @@ export const makeMainLoc = () => makeMockRoute(mainLoc, sparLoc);
 export function initMock() {
     const state = useUserStore.getState();
 
-    const user = {id: "1234", username: "jared", step_count: 5000, cur_route_id: null, last_route_id: null};
+    const user = {id: "1234", username: "jared", location: getLocation(0) as Location,  step_count: 5000, cur_route_id: null, last_route_id: null};
     state.mod_auth(true);
     state.mod_user(user);
 
     const users = [
-        {id: "2345", username: "john", step_count: 1000, cur_route_id: null, last_route_id: null},
-        {id: "3456", username: "jared", step_count: 5000, cur_route_id: null, last_route_id: null},
-        {id: "4567", username: "sophia", step_count: 7000, cur_route_id: null, last_route_id: null},
-        {id: "5678", username: "marsh", step_count: 10000, cur_route_id: null, last_route_id: null},
+        {id: "2345", username: "john", step_count: 1000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "3456", username: "jared", step_count: 5000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "4567", username: "sophia", step_count: 7000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "5678", username: "marsh", step_count: 10000, location: null, cur_route_id: null, last_route_id: null},
     ];
 
     state.add_friends(users);
@@ -162,5 +163,5 @@ export function initMock() {
     state.add_route(makeMockRoute(sparLoc, kassaiLoc));
     state.add_route(makeMockRoute(kassaiLoc, mainLoc));
 
-    console.log(useUserStore.getState());
+    // console.log(useUserStore.getState());
 }
