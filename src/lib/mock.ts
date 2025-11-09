@@ -5,7 +5,7 @@ import { Route } from "./types";
 const tenMetersWithDegrees = 0.0001;
 
 // Function to generate a location
-export const getLocation = (increment: number): unknown => {
+export const getLocation = (increment: number)=> {
     return {
         // timestamp: 1000000,
         timestamp: 1000000,
@@ -127,7 +127,7 @@ export const makeMainLoc = () => makeMockRoute(mainLoc, sparLoc);
 export function initMock() {
     const state = useUserStore.getState();
 
-    const user = {id: "1234", username: "jared", location: getLocation(0) as Location,  step_count: 5000, cur_route_id: null, last_route_id: null};
+    const user = {id: "1234", username: "jared", location: getLocation(0),  step_count: 5000, cur_route_id: null, last_route_id: null};
     state.mod_auth(true);
     state.mod_user(user);
 
