@@ -13,7 +13,7 @@ export default function Index() {
     
     return (
         <View style={styles.container}>
-            {/* <Text style={styles.text}>Map screen</Text> */}
+            
             <MapView 
                 style={styles.map}
                 initialRegion={{
