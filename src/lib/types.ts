@@ -3,6 +3,7 @@ import * as Location from "expo-location";
 export interface User {
     id: string,
     username: string,
+    location: Location.LocationObject | null,
     step_count: number,
     cur_route_id: string | null,
     last_route_id:  string | null,
