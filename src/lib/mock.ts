@@ -143,17 +143,17 @@ export function initMock() {
     const groups =  [
         {
             id: "1357",
-            name: "New group 1",
+            name: "Weekend Striders",
             members: [...[0,1].map(i => users[i])],
         },
         {
             id: "3579",
-            name: "New group 2",
+            name: "City Loop Crew",
             members: [...[1,2].map(i => users[i])],
         },
         {
             id: "5791",
-            name: "New group 3",
+            name: "Sunrise Steps",
             members: [...[0,1,2].map(i => users[i])],
         },
     ];

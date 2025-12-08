@@ -154,5 +154,3 @@ export const useUserStore = create<UserState>()((set) => ({
     del_route: (route_id) => set((state) => ({routes: state.routes.filter((route) => route.id !== route_id)})),
 }))
 
-
-

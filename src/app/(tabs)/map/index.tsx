@@ -1,6 +1,6 @@
 import { useUserStore } from "@/src/lib/store";
 import { Dimensions, StyleSheet, View } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+//import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -14,7 +14,7 @@ export default function Index() {
     return (
         <View style={styles.container}>
             
-            <MapView 
+            {/* <MapView  
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
                 initialRegion={{
@@ -30,7 +30,7 @@ export default function Index() {
                         longitude: location!.coords.longitude,
                     }}/>
                 )}
-            </MapView>
+            </MapView>*/}
         </View>
     );
 }
