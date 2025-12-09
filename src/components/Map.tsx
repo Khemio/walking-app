@@ -2,12 +2,14 @@
 import * as Location from "expo-location";
 import { Dimensions, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+// import MapView, { PROVIDER_DEFAULT } from 'react-native-maps';
+// import MapView from 'react-native-maps';
 
 type Props = {
     location: Location.LocationObject | null
 };
 
+const apiKey = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.04;
@@ -16,6 +18,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function Index({location}: Props) {
     
+    console.log(apiKey);
     return (
         <View style={styles.container}>
             
