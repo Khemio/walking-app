@@ -19,6 +19,7 @@ interface UserState {
     mod_location: (location: Location) => void,
     mod_cur_route: (route_id: string) => void,
     mod_last_route: (route_id: string) => void,
+    get_cur_route: () => Route,
 
     add_friends: (friends: User[]) => void,
     add_friend: (friend: User) => void,
@@ -56,7 +57,7 @@ function getRoutes() {
     return [];
 }
 
-export const useUserStore = create<UserState>()((set) => ({
+export const useUserStore = create<UserState>()((set, get) => ({
     authenticated: getAuth(),
     user: getUser(),
     friends: getFriends(),
@@ -97,6 +98,9 @@ export const useUserStore = create<UserState>()((set) => ({
             state.user.last_route_id = route_id;
         })
     ),
+    get_cur_route: () => {
+        return get().routes.find(r => r.id === get().user.cur_route_id)!; //TODO: Proper null check
+    },
 
     add_friends: (friends) => set((state) => ({friends: [...state.friends, ...friends]})),
     add_friend: (friend) => set((state) => ({ friends: [...state.friends, friend ] })),
