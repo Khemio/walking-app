@@ -19,6 +19,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 export default function Index({location, start_loc, end_loc}: Props) {
     const origin = {latitude: start_loc!.latitude, longitude: start_loc!.longitude};
     const destination = {latitude: end_loc!.latitude, longitude: end_loc!.longitude};
+    console.log(`location: ${location?.latitude}`);
     return (
         <View style={styles.container}>
             
