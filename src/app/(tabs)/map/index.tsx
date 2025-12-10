@@ -4,9 +4,14 @@ import { StyleSheet } from "react-native";
 
 export default function Index() {
     const location = useUserStore((state) => state.user.location);
+    const {start_loc, end_loc} = useUserStore.getState().get_cur_route();
     
     return (
-        <Map location={location} />
+        <Map 
+            location={location?.coords} 
+            start_loc={start_loc?.coords} 
+            end_loc={end_loc?.coords} 
+        />
         
     );
 }
