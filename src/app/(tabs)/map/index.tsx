@@ -1,37 +1,13 @@
+import Map from '@/src/components/Map';
 import { useUserStore } from "@/src/lib/store";
-import { Dimensions, StyleSheet, View } from "react-native";
-//import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
-const LATITUDE_DELTA = 0.04;
-// const LONGITUDE_DELTA = 0.0421;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import { StyleSheet } from "react-native";
 
 export default function Index() {
     const location = useUserStore((state) => state.user.location);
     
     return (
-        <View style={styles.container}>
-            
-            {/* <MapView  
-                style={styles.map}
-                provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                    latitude: location!.coords.latitude,
-                    longitude: location!.coords.longitude,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                }}
-            >
-                {location !== undefined && (
-                    <Marker coordinate={{
-                        latitude: location!.coords.latitude,
-                        longitude: location!.coords.longitude,
-                    }}/>
-                )}
-            </MapView>*/}
-        </View>
+        <Map location={location} />
+        
     );
 }
 
