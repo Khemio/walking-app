@@ -1,6 +1,6 @@
+import User from "@/src/components/user";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import User from "./components/user";
 
 const mockRoutes = [
   { name: "Harbor Loop", isActive: true },

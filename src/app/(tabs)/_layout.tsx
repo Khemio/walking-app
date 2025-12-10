@@ -26,7 +26,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="home/index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -35,7 +35,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="map"
+        name="map/index"
         options={{
           title: 'Map',
           tabBarIcon: ({ color, focused }) => (
@@ -44,7 +44,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="social"
+        name="social/index"
         options={{
           title: 'Social',
           tabBarIcon: ({ color, focused }) => (
@@ -53,7 +53,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="stats"
+        name="stats/index"
         options={{
           title: 'Stats',
           tabBarIcon: ({ color, focused }) => (
