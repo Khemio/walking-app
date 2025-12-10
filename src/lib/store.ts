@@ -1,3 +1,4 @@
+import * as Location from "expo-location";
 import { produce } from "immer";
 import { create } from "zustand";
 import { Group, Route, User } from "./types";
@@ -16,7 +17,7 @@ interface UserState {
     mod_username: (username: string) => void,
     mod_step_count: (step_count: number) => void,
     inc_step_count: (step_inc: number) => void,
-    mod_location: (location: Location) => void,
+    mod_location: (location: Location.LocationObject) => void,
     mod_cur_route: (route_id: string) => void,
     mod_last_route: (route_id: string) => void,
     get_cur_route: () => Route,
@@ -85,7 +86,7 @@ export const useUserStore = create<UserState>()((set, get) => ({
     ),
     mod_location: (location) => set(
         produce((state) => { 
-            state.user.location= location;
+            state.user.location = location;
         })
     ),
     mod_cur_route: (route_id) => set(
