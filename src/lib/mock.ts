@@ -160,8 +160,9 @@ export function initMock() {
 
     state.add_groups(groups);
 
+    state.add_route(makeMockRoute(mainLoc, sparLoc));
     state.add_route(makeMockRoute(sparLoc, kassaiLoc));
     state.add_route(makeMockRoute(kassaiLoc, mainLoc));
 
-    // console.log(useUserStore.getState());
+    state.mod_cur_route(state.routes[0]?.id);
 }
