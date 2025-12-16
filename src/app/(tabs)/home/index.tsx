@@ -1,3 +1,14 @@
+/*import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import DailyStepsWidget from '../../../components/DailyStepsWidget';
+import WorkoutScreen from '../../../components/WorkoutScreen';
+
+export default function HomeScreen() {
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <DailyStepsWidget />
+      <WorkoutScreen />
+    </ScrollView>*/
 import User from "@/src/components/user";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -43,6 +54,13 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  /*container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 20,
+  },*/
   safeArea: {
     flex: 1,
     backgroundColor: "#0b1221",
