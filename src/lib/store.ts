@@ -16,8 +16,10 @@ interface UserState {
     mod_username: (username: string) => void,
     mod_step_count: (step_count: number) => void,
     inc_step_count: (step_inc: number) => void,
+    mod_location: (location: Location) => void,
     mod_cur_route: (route_id: string) => void,
     mod_last_route: (route_id: string) => void,
+    get_cur_route: () => Route,
 
     add_friends: (friends: User[]) => void,
     add_friend: (friend: User) => void,
@@ -40,7 +42,7 @@ function getAuth() {
 }
 
 function getUser() {
-    return {id: "", username: "", step_count: 0, cur_route_id: null, last_route_id: null};
+    return {id: "", username: "", step_count: 0, location: null, cur_route_id: null, last_route_id: null};
 }
 
 function getFriends() {
@@ -55,7 +57,7 @@ function getRoutes() {
     return [];
 }
 
-export const useUserStore = create<UserState>()((set) => ({
+export const useUserStore = create<UserState>()((set, get) => ({
     authenticated: getAuth(),
     user: getUser(),
     friends: getFriends(),
@@ -81,6 +83,11 @@ export const useUserStore = create<UserState>()((set) => ({
             state.user.step_count += step_inc;
         })
     ),
+    mod_location: (location) => set(
+        produce((state) => { 
+            state.user.location= location;
+        })
+    ),
     mod_cur_route: (route_id) => set(
         produce((state) => { 
             state.user.cur_route_id = route_id;
@@ -91,6 +98,9 @@ export const useUserStore = create<UserState>()((set) => ({
             state.user.last_route_id = route_id;
         })
     ),
+    get_cur_route: () => {
+        return get().routes.find(r => r.id === get().user.cur_route_id)!; //TODO: Proper null check
+    },
 
     add_friends: (friends) => set((state) => ({friends: [...state.friends, ...friends]})),
     add_friend: (friend) => set((state) => ({ friends: [...state.friends, friend ] })),
@@ -147,6 +157,4 @@ export const useUserStore = create<UserState>()((set) => ({
     add_route: (route) => set((state) => ({routes: [...state.routes, route]})),
     del_route: (route_id) => set((state) => ({routes: state.routes.filter((route) => route.id !== route_id)})),
 }))
-
-
 

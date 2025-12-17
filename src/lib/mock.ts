@@ -5,8 +5,9 @@ import { Route } from "./types";
 const tenMetersWithDegrees = 0.0001;
 
 // Function to generate a location
-const getLocation = (increment: number) => {
+export const getLocation = (increment: number)=> {
     return {
+        // timestamp: 1000000,
         timestamp: 1000000,
         coords: {
         speed: 0,
@@ -14,8 +15,8 @@ const getLocation = (increment: number) => {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.542338 + increment * tenMetersWithDegrees, // add your current longitude
-        latitude: 21.620078 + increment * tenMetersWithDegrees,  // add your current lattitude
+        longitude: 21.621494 + increment * tenMetersWithDegrees, // add your current longitude
+        latitude: 47.553466 + increment * tenMetersWithDegrees,  // add your current lattitude
         // longitude: -122.0312186 + increment * tenMetersWithDegrees, // add your current longitude
         // latitude: 37.33233141 + increment * tenMetersWithDegrees,  // add your current lattitude
         },
@@ -57,8 +58,8 @@ const sparLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.542338,
-        latitude: 21.620078,
+        latitude: 47.542338,
+        longitude: 21.620078,
     }
 }
 
@@ -71,8 +72,8 @@ const kassaiLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.543574,
-        latitude: 21.640201,
+        latitude: 47.543574,
+        longitude: 21.640201,
     } 
 }
 
@@ -85,8 +86,8 @@ const mainLoc: Location.LocationObject = {
         accuracy: 5,
         altitudeAccuracy: 5,
         altitude: 5,
-        longitude: 47.553466,
-        latitude: 21.621494,
+        latitude: 47.553466,
+        longitude: 21.621494,
     } 
 }
 
@@ -126,15 +127,15 @@ export const makeMainLoc = () => makeMockRoute(mainLoc, sparLoc);
 export function initMock() {
     const state = useUserStore.getState();
 
-    const user = {id: "1234", username: "jared", step_count: 5000, cur_route_id: null, last_route_id: null};
+    const user = {id: "1234", username: "jared", location: getLocation(0),  step_count: 5000, cur_route_id: null, last_route_id: null};
     state.mod_auth(true);
     state.mod_user(user);
 
     const users = [
-        {id: "2345", username: "john", step_count: 1000, cur_route_id: null, last_route_id: null},
-        {id: "3456", username: "jared", step_count: 5000, cur_route_id: null, last_route_id: null},
-        {id: "4567", username: "sophia", step_count: 7000, cur_route_id: null, last_route_id: null},
-        {id: "5678", username: "marsh", step_count: 10000, cur_route_id: null, last_route_id: null},
+        {id: "2345", username: "john", step_count: 1000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "3456", username: "jared", step_count: 5000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "4567", username: "sophia", step_count: 7000, location: null, cur_route_id: null, last_route_id: null},
+        {id: "5678", username: "marsh", step_count: 10000, location: null, cur_route_id: null, last_route_id: null},
     ];
 
     state.add_friends(users);
@@ -142,25 +143,26 @@ export function initMock() {
     const groups =  [
         {
             id: "1357",
-            name: "New group 1",
+            name: "Weekend Striders",
             members: [...[0,1].map(i => users[i])],
         },
         {
             id: "3579",
-            name: "New group 2",
+            name: "City Loop Crew",
             members: [...[1,2].map(i => users[i])],
         },
         {
             id: "5791",
-            name: "New group 3",
+            name: "Sunrise Steps",
             members: [...[0,1,2].map(i => users[i])],
         },
     ];
 
     state.add_groups(groups);
 
+    state.add_route(makeMockRoute(mainLoc, sparLoc));
     state.add_route(makeMockRoute(sparLoc, kassaiLoc));
     state.add_route(makeMockRoute(kassaiLoc, mainLoc));
 
-    console.log(useUserStore.getState());
+    state.mod_cur_route(state.routes[0]?.id);
 }
