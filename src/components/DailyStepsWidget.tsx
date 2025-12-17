@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
 import { Pedometer } from 'expo-sensors';
-import { useActivityPermissions, openAppSettings } from '../lib/useActivityPermissions';
+import { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { openAppSettings, useActivityPermissions } from '../lib/useActivityPermissions';
 
 const DailyStepsWidget = () => {
   // Now we specify that this component ONLY needs the pedometer permission.

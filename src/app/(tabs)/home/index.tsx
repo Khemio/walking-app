@@ -9,8 +9,9 @@ export default function HomeScreen() {
       <DailyStepsWidget />
       <WorkoutScreen />
     </ScrollView>*/
+import DailyStepsWidget from '@/src/components/DailyStepsWidget';
 import User from "@/src/components/user";
-import React from "react";
+import WorkoutScreen from '@/src/components/WorkoutScreen';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const mockRoutes = [
@@ -48,6 +49,9 @@ export default function Home() {
         <View style={styles.block}>
           <User {...user} highlights={highlights} />
         </View>
+
+        <DailyStepsWidget />
+        <WorkoutScreen />
       </ScrollView>
     </SafeAreaView>
   );
