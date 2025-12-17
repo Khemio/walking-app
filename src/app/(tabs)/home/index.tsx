@@ -1,3 +1,14 @@
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import DailyStepsWidget from '../../../components/DailyStepsWidget';
+import WorkoutScreen from '../../../components/WorkoutScreen';
+
+export default function HomeScreen() {
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <DailyStepsWidget />
+      <WorkoutScreen />
+    </ScrollView>
 import User from "@/src/components/user";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
