@@ -1,16 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import DailyStepsWidget from '../../../components/DailyStepsWidget';
-import WorkoutScreen from '../../../components/WorkoutScreen';
-
-export default function HomeScreen() {
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <DailyStepsWidget />
-      <WorkoutScreen />
-    </ScrollView>
+import DailyStepsWidget from '@/src/components/DailyStepsWidget';
 import User from "@/src/components/user";
-import React from "react";
+import WorkoutScreen from '@/src/components/WorkoutScreen';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const mockRoutes = [
@@ -48,12 +38,22 @@ export default function Home() {
         <View style={styles.block}>
           <User {...user} highlights={highlights} />
         </View>
+
+        <DailyStepsWidget />
+        <WorkoutScreen />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  /*container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 20,
+  },*/
   safeArea: {
     flex: 1,
     backgroundColor: "#0b1221",
