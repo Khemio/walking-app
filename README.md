@@ -34,3 +34,9 @@ to make unit test
 ```bash
 npx jest
 ```
+
+first to install library to node_modules run
+
+```bash
+npm install
+```
