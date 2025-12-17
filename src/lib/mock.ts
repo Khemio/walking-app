@@ -23,6 +23,48 @@ export const getLocation = (increment: number)=> {
     };
 };
 
+// Function to change a location and get a new location
+export const changeLocation = (location: Location.LocationObject, latChange: number, longChange: number): Location.LocationObject => {
+    // const newLoc = {...location}; // Not sure how deep of a copy this is
+
+    // newLoc.coords.latitude += latChange * tenMetersWithDegrees;
+    // newLoc.coords.longitude += longChange * tenMetersWithDegrees;
+    // // location.coords.latitude += latChange * tenMetersWithDegrees;
+    // // location.coords.longitude += longChange * tenMetersWithDegrees;
+
+    // return newLoc;
+
+    return {
+        // timestamp: 1000000,
+        timestamp: location.timestamp,
+        coords: {
+        speed: location.coords.speed,
+        heading: location.coords.heading,
+        accuracy: location.coords.accuracy,
+        altitudeAccuracy: location.coords.altitudeAccuracy,
+        altitude: location.coords.altitude,
+        longitude: location.coords.longitude + longChange * tenMetersWithDegrees,
+        latitude: location.coords.latitude + latChange * tenMetersWithDegrees,
+        },
+    };
+};
+
+export const move = () => {
+    const limit = 5;
+    let count = 0;
+    let intervalId = setInterval(() => {
+        if (count >= limit) clearInterval(intervalId);
+        console.log(`count: ${count}, interval: ${intervalId}`);
+
+        const cur_loc = useUserStore.getState().user.location;
+        const newLoc = changeLocation(cur_loc!, 20, 0);
+        useUserStore.getState().mod_location(newLoc);
+        count++;
+    }, 5000);
+
+    return true;
+}
+
 // Function to set up an emmiter of fake locaation changes
 function makeLocEmmiter() {
     let counter = 0;
@@ -143,17 +185,17 @@ export function initMock() {
     const groups =  [
         {
             id: "1357",
-            name: "Weekend Striders",
+            name: "New group 1",
             members: [...[0,1].map(i => users[i])],
         },
         {
             id: "3579",
-            name: "City Loop Crew",
+            name: "New group 2",
             members: [...[1,2].map(i => users[i])],
         },
         {
             id: "5791",
-            name: "Sunrise Steps",
+            name: "New group 3",
             members: [...[0,1,2].map(i => users[i])],
         },
     ];
@@ -164,5 +206,7 @@ export function initMock() {
     state.add_route(makeMockRoute(sparLoc, kassaiLoc));
     state.add_route(makeMockRoute(kassaiLoc, mainLoc));
 
+    // "state" gotten from "useUserStore.getState()" is a snapshot to get current state you need to call it again
+    // state.mod_cur_route(state.routes[0]?.id);
     state.mod_cur_route(useUserStore.getState().routes[0]?.id);
 }
