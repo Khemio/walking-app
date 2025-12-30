@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Alert } from 'react-native';
-import { Pedometer } from 'expo-sensors';
 import * as Location from 'expo-location';
-import { useActivityPermissions, openAppSettings } from '../lib/useActivityPermissions';
+import { Pedometer } from 'expo-sensors';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { openAppSettings, useActivityPermissions } from '../lib/useActivityPermissions';
 
 const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const R = 6371e3; // metres
@@ -109,7 +109,7 @@ const WorkoutScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Workout Tracker</Text>
+      {/* <Text style={styles.title}>Workout Tracker</Text> */}
 
       {isTracking ? (
         <View style={styles.metricsContainer}>
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   title: {
       fontSize: 32,
+      color: 'white',
       fontWeight: 'bold',
   },
   metricsContainer: {
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
   metricText: {
     fontSize: 24,
     marginVertical: 10,
+    color: 'white',
   },
   permissionWarning: {
       fontSize: 14,
