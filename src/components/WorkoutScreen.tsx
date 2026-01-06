@@ -113,21 +113,21 @@ const WorkoutScreen = () => {
 
       {isTracking ? (
         <View style={styles.metricsContainer}>
-            <Text style={styles.metricText}>Время: {formatTime(elapsedTime)}</Text>
-            <Text style={styles.metricText}>Шаги: {sessionSteps}</Text>
-            <Text style={styles.metricText}>Дистанция: {(sessionDistance / 1000).toFixed(2)} km</Text>
+            <Text style={styles.metricText}>Time: {formatTime(elapsedTime)}</Text>
+            <Text style={styles.metricText}>Steps: {sessionSteps}</Text>
+            <Text style={styles.metricText}>Distance: {(sessionDistance / 1000).toFixed(2)} km</Text>
         </View>
       ) : (
          <View style={styles.metricsContainer}>
-            <Text style={styles.metricText}>Начните новую тренировку</Text>
+            <Text style={styles.metricText}>Start new training</Text>
             {status !== 'granted' && (
-                <Text style={styles.permissionWarning}>Требуются разрешения</Text>
+                <Text style={styles.permissionWarning}>Permissions are required</Text>
             )}
          </View>
       )}
 
       <Button
-        title={isTracking ? "Завершить тренировку" : "Начать тренировку"}
+        title={isTracking ? "End training" : "Start training"}
         onPress={isTracking ? stopWorkout : handleStartWorkout}
         color={isTracking ? "red" : "green"}
       />
