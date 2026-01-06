@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { openAppSettings, useActivityPermissions } from '../lib/useActivityPermissions';
 
+//TODO: Style adjustments
 const DailyStepsWidget = () => {
   // Now we specify that this component ONLY needs the pedometer permission.
   const { status, requestPermissionsAsync } = useActivityPermissions({ pedometer: true });
@@ -42,7 +43,8 @@ const DailyStepsWidget = () => {
   const renderContent = () => {
     switch (status) {
       case 'granted':
-        return <Text style={styles.text}>Сегодня пройдено: {stepCount} шагов</Text>;
+        // return <Text style={styles.text}>Сегодня пройдено: {stepCount} шагов</Text>;
+        return <Text style={styles.text}>Walked today: {stepCount} steps</Text>;
       case 'denied':
         return (
           <View style={styles.centered}>
