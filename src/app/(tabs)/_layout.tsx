@@ -16,12 +16,14 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: '#ffd33d',
         headerStyle: {
-            backgroundColor: '#25292e',
+            backgroundColor: '#0d1427',
+            // backgroundColor: '#25292e',
           },
           headerShadowVisible: false,
           headerTintColor: '#fff',
           tabBarStyle: {
-            backgroundColor: '#25292e',
+            backgroundColor: '#0d1427',
+            // backgroundColor: '#25292e',
           },
       }}
     >
