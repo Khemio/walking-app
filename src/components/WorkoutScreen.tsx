@@ -32,6 +32,7 @@ const WorkoutScreen = () => {
 
   const lastLocation = useRef<Location.LocationObject | null>(null);
 
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isTracking && startTime) {
@@ -109,7 +110,6 @@ const WorkoutScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text style={styles.title}>Workout Tracker</Text> */}
 
       {isTracking ? (
         <View style={styles.metricsContainer}>
@@ -118,18 +118,18 @@ const WorkoutScreen = () => {
             <Text style={styles.metricText}>Distance: {(sessionDistance / 1000).toFixed(2)} km</Text>
         </View>
       ) : (
-         <View style={styles.metricsContainer}>
-            <Text style={styles.metricText}>Start new training</Text>
+          <View style={styles.metricsContainer}>
+            <Text style={styles.metricText}>Start New training</Text>
             {status !== 'granted' && (
                 <Text style={styles.permissionWarning}>Permissions are required</Text>
             )}
-         </View>
+          </View>
       )}
 
       <Button
         title={isTracking ? "End training" : "Start training"}
         onPress={isTracking ? stopWorkout : handleStartWorkout}
-        color={isTracking ? "red" : "green"}
+        color={isTracking ? "red" : "#10b981"}
       />
     </SafeAreaView>
   );
@@ -141,7 +141,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     padding: 20,
+    marginVertical: 20,
     width: '100%',
+    backgroundColor: '#0d1427',
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#1f2937",
   },
   title: {
       fontSize: 32,
@@ -150,17 +156,18 @@ const styles = StyleSheet.create({
   },
   metricsContainer: {
     alignItems: 'center',
-    marginVertical: 30,
+    marginVertical: 2,
   },
   metricText: {
-    fontSize: 24,
-    marginVertical: 10,
+    fontSize: 18,
+    marginVertical: 8,
     color: 'white',
   },
   permissionWarning: {
       fontSize: 14,
-      color: 'orange',
-      marginTop: 10,
+      color: '#ffd33d',
+      // color: 'orange',
+      marginVertical: 10,
   }
 });
 

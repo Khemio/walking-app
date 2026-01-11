@@ -39,21 +39,25 @@ export default function Home() {
           <User {...user} highlights={highlights} />
         </View>
 
-        <DailyStepsWidget />
-        <WorkoutScreen />
+        <View style={styles.card}>
+          <DailyStepsWidget />
+        </View>
+
+        <View style={styles.card}>
+          <WorkoutScreen />
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  /*container: {
+  card: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingVertical: 20,
-  },*/
+  },
   safeArea: {
     flex: 1,
     backgroundColor: "#0b1221",
