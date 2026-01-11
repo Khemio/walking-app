@@ -34,7 +34,7 @@ const WorkoutScreen = () => {
 
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     if (isTracking && startTime) {
       timer = setInterval(() => {
         setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
